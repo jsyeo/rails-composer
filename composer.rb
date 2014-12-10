@@ -2329,9 +2329,6 @@ if prefs[:estl]
   add_gem 'lol_dba', :group => :development
   add_gem 'rails-dev-boost', :group => :development
   add_gem 'yard', :group => [:development, :test]
-  add_gem 'rubocop', :group => [:development, :test]
-  rubocop = 'https://raw.githubusercontent.com/jsyeo/proto/master/.rubocop.yml'
-  copy_from rubocop, '.rubocop.yml'
 end
 
 
