@@ -2193,6 +2193,7 @@ config['quiet_assets'] = yes_wizard?("Reduce assets logger noise during developm
 config['better_errors'] = yes_wizard?("Improve error reporting with 'better_errors' during development?") if true && true unless config.key?('better_errors') || prefs.has_key?(:better_errors)
 config['pry'] = yes_wizard?("Use 'pry' as console replacement during development and test?") if true && true unless config.key?('pry') || prefs.has_key?(:pry)
 config['rubocop'] = yes_wizard?("Use 'rubocop' to ensure that your code conforms to the ruby style guide?") if true && true unless config.key?('rubocop') || prefs.has_key?(:rubocop)
+config['estl'] = yes_wizard?("Use ESTL's set of prefered gems?") if true && true unless config.key?('estl') || prefs.has_key?(:estl)
 @configs[@current_recipe] = config
 # >---------------------------- recipes/extras.rb ----------------------------start<
 
@@ -2317,6 +2318,23 @@ if prefs[:pry]
   add_gem 'pry-rails', :group => [:development, :test]
   add_gem 'pry-rescue', :group => [:development, :test]
 end
+
+# ESTL
+if config['estl']
+  prefs[:estl] = true
+end
+if prefs[:estl]
+  say_wizard "recipe adding ESTL prefered gems"
+  add_gem 'bullet', :group => :development
+  add_gem 'lol_dba', :group => :development
+  add_gem 'rails-dev-boost', :group => :development
+  add_gem 'yard', :group => [:development, :test]
+  add_gem 'rubocop', :group => [:development, :test]
+  rubocop = 'https://raw.githubusercontent.com/jsyeo/proto/master/.rubocop.yml'
+  copy_from rubocop, '.rubocop.yml'
+end
+
+
 
 ## BAN SPIDERS
 if config['ban_spiders']
