@@ -2188,6 +2188,7 @@ config['local_env_file'] = multiple_choice("Add gem and file for environment var
 config['quiet_assets'] = yes_wizard?("Reduce assets logger noise during development?") if true && true unless config.key?('quiet_assets') || prefs.has_key?(:quiet_assets)
 config['better_errors'] = yes_wizard?("Improve error reporting with 'better_errors' during development?") if true && true unless config.key?('better_errors') || prefs.has_key?(:better_errors)
 config['pry'] = yes_wizard?("Use 'pry' as console replacement during development and test?") if true && true unless config.key?('pry') || prefs.has_key?(:pry)
+config['rubocop'] = yes_wizard?("Use 'rubocop' to ensure that your code conforms to the ruby style guide?") if true && true unless config.key?('rubocop') || prefs.has_key?(:rubocop)
 @configs[@current_recipe] = config
 # >---------------------------- recipes/extras.rb ----------------------------start<
 
@@ -2334,6 +2335,16 @@ case RbConfig::CONFIG['host_os']
       say_wizard "recipe adding 'therubyracer' JavaScript runtime gem"
       add_gem 'therubyracer', :platform => :ruby
     end
+end
+
+## Rubocop
+if config['rubocop']
+  prefs[:rubocop] = true
+end
+if prefs[:rubocop]
+  say_wizard "recipe adding rubocop gem and basic .rubocop.yml"
+  add_gem 'rubocop', :group => [:development, :test]
+  copy_from_repo '.rubocop.yml'
 end
 
 stage_three do
